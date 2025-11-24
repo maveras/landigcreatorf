@@ -102,7 +102,7 @@ const LandingPageSectionsGenerator = () => {
   };
 
   // Manejador genérico para los cambios en el formulario
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     let newValue: string | number = value;
 
@@ -121,12 +121,12 @@ const LandingPageSectionsGenerator = () => {
   };
 
   // Manejador para la subida de imagen local (opcional)
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof LandingConfig = 'imageUrl') => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setState(prevState => ({ ...prevState, imageUrl: reader.result as string }));
+        setState(prevState => ({ ...prevState, [fieldName]: reader.result as string }));
       };
       reader.readAsDataURL(file);
     }
@@ -205,7 +205,19 @@ const LandingPageSectionsGenerator = () => {
   }
 
   return (
-    <div className="p-4 md:p-8 bg-gray-100 min-h-screen font-sans relative">
+    <div className="bg-gray-100 h-screen font-sans relative overflow-hidden flex flex-col">
+
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-center p-4 md:p-6 bg-white shadow-sm z-10 shrink-0">
+        <h1 className="text-2xl md:text-3xl font-bold text-indigo-700 text-center md:text-left">🛠️ Generador Landing Pages</h1>
+        <button
+          onClick={handleShowPreview}
+          className="mt-4 md:mt-0 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition flex items-center space-x-2"
+        >
+          <span>📱</span>
+          <span>Ver en Móvil</span>
+        </button>
+      </div>
 
       {/* Modal QR Code */}
       {showQR && (
@@ -244,24 +256,13 @@ const LandingPageSectionsGenerator = () => {
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-indigo-700 text-center md:text-left">🛠️ Generador Landing Pages</h1>
-        <button
-          onClick={handleShowPreview}
-          className="mt-4 md:mt-0 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-700 transition flex items-center space-x-2"
-        >
-          <span>📱</span>
-          <span>Ver en Móvil</span>
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="flex-1 flex overflow-hidden">
 
         {/* ======================================================= */}
-        {/* --- Columna de Controles --- */}
+        {/* --- Columna de Controles (Scrollable) --- */}
         {/* ======================================================= */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-xl h-fit sticky top-4">
-          <h2 className="text-xl font-semibold mb-4 text-indigo-600">Controles de Diseño</h2>
+        <div className="w-full lg:w-1/3 bg-gray-50 border-r border-gray-200 overflow-y-auto p-6">
+          <h2 className="text-xl font-semibold mb-4 text-indigo-600 sticky top-0 bg-gray-50 py-2 z-10">Controles de Diseño</h2>
 
           <HeroControls
             config={state}
@@ -284,21 +285,20 @@ const LandingPageSectionsGenerator = () => {
             onTestimonialChange={handleTestimonialChange}
             onDownload={() => downloadImage(section3Ref, 'section-3-testimonials.jpg')}
           />
-
         </div>
 
         {/* ======================================================= */}
-        {/* --- Columna de Previsualización y Resultado --- */}
+        {/* --- Columna de Previsualización (Fija / Centrada) --- */}
         {/* ======================================================= */}
-        <div className="lg:col-span-2">
+        <div className="w-full lg:w-2/3 bg-gray-200 flex flex-col items-center justify-center p-8 overflow-hidden">
           <h2 className="text-xl font-semibold mb-4 text-center text-green-600">Previsualización (Vista Móvil)</h2>
-          <p className="text-center text-sm mb-4 text-gray-600">
+          <p className="text-center text-sm mb-4 text-gray-600 max-w-md">
             Descarga cada sección por separado para importarlas como imágenes de fondo en Gempages.
           </p>
 
-          <div className="relative mx-auto border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl overflow-hidden">
+          <div className="relative border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[600px] w-[300px] shadow-2xl overflow-hidden shrink-0">
             {/* Pantalla del Teléfono */}
-            <div className="w-[272px] h-[572px] bg-white overflow-y-scroll">
+            <div className="w-[272px] h-[572px] bg-white overflow-y-scroll no-scrollbar">
 
               <HeroPreview ref={heroRef} config={state} />
 

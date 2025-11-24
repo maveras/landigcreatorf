@@ -16,13 +16,25 @@ export const TestimonialsPreview = forwardRef<HTMLDivElement, TestimonialsPrevie
     return (
         <div ref={ref} className="w-full relative py-6" id="section-3-to-capture" style={{ backgroundColor: config.section3BgColor }}>
 
-            <h2 className="text-lg font-bold text-center px-4 text-gray-900 mb-4">
+            <h2
+                className="text-lg font-bold text-center px-4 mb-4"
+                style={{
+                    color: config.section3TitleColor,
+                    fontFamily: config.section3TitleFont
+                }}
+            >
                 {config.section3Title}
             </h2>
 
-            <div className="space-y-4 px-4">
+            <div className={`px-4 ${config.section3Layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'space-y-4'}`}>
                 {config.section3Testimonials.map((testimonial, index) => (
-                    <div key={`s3-test-${index}`} className="bg-white p-4 rounded-xl shadow-lg border border-gray-100">
+                    <div
+                        key={`s3-test-${index}`}
+                        className={`
+                            bg-white p-4 rounded-xl shadow-lg border border-gray-100
+                            ${config.section3Layout === 'grid' ? 'flex flex-col justify-between h-full' : ''}
+                        `}
+                    >
                         <div className="flex justify-between items-center mb-2">
                             <div className="flex items-center space-x-2">
                                 <img

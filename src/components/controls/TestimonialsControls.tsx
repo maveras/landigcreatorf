@@ -1,5 +1,6 @@
 import React from 'react';
 import { LandingConfig, TestimonialItem } from '../../types';
+import { FONT_OPTIONS } from '../../constants';
 
 interface TestimonialsControlsProps {
     config: LandingConfig;
@@ -13,10 +14,45 @@ export const TestimonialsControls: React.FC<TestimonialsControlsProps> = ({ conf
         <div className="p-4 border border-gray-200 rounded-lg bg-yellow-50 mt-6">
             <h3 className="text-lg font-bold mb-3 text-yellow-800">Sección 3: Testimonios</h3>
 
-            <label className="block mb-4">
-                <span className="text-sm font-medium text-gray-700">Título de la Sección:</span>
-                <input type="text" name="section3Title" value={config.section3Title} onChange={onChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
-            </label>
+            {/* Selector de Layout */}
+            <div className="bg-white p-2 rounded border border-yellow-200 mb-4">
+                <span className="text-xs font-medium text-gray-700 block mb-2">Disposición:</span>
+                <div className="flex space-x-2">
+                    <button
+                        onClick={() => onChange({ target: { name: 'section3Layout', value: 'list' } } as any)}
+                        className={`flex-1 py-1 px-2 text-xs rounded border ${config.section3Layout === 'list' ? 'bg-yellow-100 border-yellow-500 text-yellow-700' : 'bg-gray-50 text-gray-600'}`}
+                    >
+                        Lista (Vertical)
+                    </button>
+                    <button
+                        onClick={() => onChange({ target: { name: 'section3Layout', value: 'grid' } } as any)}
+                        className={`flex-1 py-1 px-2 text-xs rounded border ${config.section3Layout === 'grid' ? 'bg-yellow-100 border-yellow-500 text-yellow-700' : 'bg-gray-50 text-gray-600'}`}
+                    >
+                        Grilla (Tarjetas)
+                    </button>
+                </div>
+            </div>
+
+            <div className="border-b pb-4 mb-4">
+                <label className="block mb-2">
+                    <span className="text-sm font-medium text-gray-700">Título de la Sección:</span>
+                    <input type="text" name="section3Title" value={config.section3Title} onChange={onChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
+                </label>
+                <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1">
+                        <span className="text-xs text-gray-500">Color:</span>
+                        <input type="color" name="section3TitleColor" value={config.section3TitleColor} onChange={onChange} className="h-6 w-8 border-none p-0 rounded" />
+                    </div>
+                    <div className="flex items-center space-x-1 flex-1">
+                        <span className="text-xs text-gray-500">Fuente:</span>
+                        <select name="section3TitleFont" value={config.section3TitleFont} onChange={onChange} className="block w-full border border-gray-300 rounded-md shadow-sm p-1 text-xs">
+                            {FONT_OPTIONS.map((font) => (
+                                <option key={font.value} value={font.value}>{font.label}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </div>
             <label className="block mb-4">
                 <span className="text-sm font-medium text-gray-700">Color de Fondo S3:</span>
                 <input type="color" name="section3BgColor" value={config.section3BgColor} onChange={onChange} className="mt-1 w-full h-8 border-none p-0 rounded-md" />

@@ -15,14 +15,40 @@ export const BenefitsPreview = forwardRef<HTMLDivElement, BenefitsPreviewProps>(
     return (
         <div ref={ref} className="w-full relative" id="section-2-to-capture" style={{ backgroundColor: config.section2BgColor }}>
 
-            <h2 className="text-lg font-bold text-center pt-6 pb-2 px-4 text-gray-900">
+            {/* Gradiente Superior S2 */}
+            <div
+                style={{
+                    height: `${config.section2TopGradientHeight}px`,
+                    background: `linear-gradient(to bottom, ${config.section2TopGradientColorStart}, ${config.section2TopGradientColorEnd})`,
+                    width: '100%'
+                }}
+            ></div>
+
+            <h2
+                className="text-lg font-bold text-center pt-6 pb-2 px-4 mb-4"
+                style={{
+                    color: config.section2TitleColor,
+                    fontFamily: config.section2TitleFont
+                }}
+            >
                 {config.section2Title}
             </h2>
 
-            <div className="space-y-4 p-4 pb-6">
+            <div className={`p-4 pb-6 ${config.section2Layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'space-y-4'}`}>
                 {config.section2Benefits.map((benefit, index) => (
-                    <div key={`s2-ben-${index}`} className="flex items-start space-x-3">
-                        <span className="text-2xl pt-1" style={{ color: benefit.color }}>
+                    <div
+                        key={`s2-ben-${index}`}
+                        className={`
+                            ${config.section2Layout === 'grid'
+                                ? 'flex flex-col items-center text-center p-4 bg-white rounded-xl shadow-sm border border-gray-100'
+                                : 'flex items-start space-x-3'
+                            }
+                        `}
+                    >
+                        <span
+                            className={`${config.section2Layout === 'grid' ? 'text-4xl mb-3' : 'text-2xl pt-1'}`}
+                            style={{ color: benefit.color }}
+                        >
                             {benefit.icon}
                         </span>
                         <div>
